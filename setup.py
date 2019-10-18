@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 from distutils.extension import Extension
 from Cython.Build import cythonize
 import pathlib
@@ -20,7 +20,7 @@ setup(
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/kerighan/eldar",
-    packages=["eldar"],
+    packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3.7",
         "Operating System :: OS Independent",
