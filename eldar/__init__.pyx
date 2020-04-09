@@ -3,7 +3,7 @@ import cython
 import re
 
 
-__version__ = "0.0.1"
+__version__ = "0.0.3"
 operators = {"OR", "AND", "AND NOT"}
 
 
