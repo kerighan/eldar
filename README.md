@@ -21,7 +21,7 @@ pip install eldar
 ### Basic usage
 
 ```python
-from eldar import build_query
+from eldar import Query
 
 
 # build list
@@ -32,7 +32,7 @@ documents = [
     "Elijah Wood was cast as Frodo Baggins in Jackson's adaptation",
     "The Lord of the Rings is an epic fantasy novel by J. R. R. Tolkien"]
 
-eldar = build_query('("gandalf" OR "frodo") AND NOT ("movie" OR "adaptation")')
+eldar = Query('("gandalf" OR "frodo") AND NOT ("movie" OR "adaptation")')
 
 # use `filter` to get a list of matches:
 print(eldar.filter(documents))
@@ -49,7 +49,7 @@ print(eldar(documents[2]))
 
 You can also use it to mask Pandas DataFrames:
 ```python
-from eldar import build_query
+from eldar import Query
 import pandas as pd
 
 
@@ -63,7 +63,7 @@ df = pd.DataFrame([
     columns=['content'])
 
 # build query object
-eldar = build_query('("gandalf" OR "frodo") AND NOT ("movie" OR "adaptation")')
+eldar = Query('("gandalf" OR "frodo") AND NOT ("movie" OR "adaptation")')
 
 # eldar's call returns True if the text matches the query.
 # You can filter a dataframe using pandas mask syntax:
