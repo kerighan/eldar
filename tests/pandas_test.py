@@ -1,4 +1,4 @@
-from eldar import build_query
+from eldar import Query
 import pandas as pd
 
 
@@ -12,9 +12,13 @@ df = pd.DataFrame([
     columns=['content'])
 
 # build query object
-eldar = build_query('("gandalf" OR "frodo") AND NOT ("movie" OR "adaptation")')
+query = Query(
+    '("gandalf" OR "frodo") AND NOT ("movies" OR "adaptation")',
+    ignore_case=True,
+    ignore_accent=True,
+    match_word=True)
 
-# eldar's call returns True if the text matches the query.
+# calling the object returns True if the text matches the query.
 # You can filter a dataframe using pandas mask syntax:
-df = df[df.content.apply(eldar)]
+df = df[df.content.apply(query)]
 print(df)

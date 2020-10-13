@@ -1,8 +1,8 @@
-from eldar import build_query
+from eldar import Query
 from pprint import pprint
 
 
-# build list
+# create list of documents to match:
 documents = [
     "Gandalf is a fictional character in Tolkien's The Lord of the Rings",
     "Frodo is the main character in The Lord of the Rings",
@@ -10,15 +10,27 @@ documents = [
     "Elijah Wood was cast as Frodo Baggins in Jackson's adaptation",
     "The Lord of the Rings is an epic fantasy novel by J. R. R. Tolkien"]
 
-eldar = build_query('("gandalf" OR "frodo") AND NOT ("movie" OR "adaptation")')
+# build query:
+query = Query('("gandalf" OR "frodo") AND NOT ("movie" OR "adaptation")')
 
-# use `filter` to get a list of matches:
-pprint(eldar.filter(documents))
+# print query:
+print(query)
+# >>> ((gandalf) OR (frodo)) AND NOT ((movie) OR (adaptation))
+
+# use `filter` method to get a list of matches:
+pprint(query.filter(documents))
 # >>> ["Gandalf is a fictional character in Tolkien's The Lord of the Rings",
-#     'Frodo is the main character in The Lord of the Rings']
+#      'Frodo is the main character in The Lord of the Rings',
+#      "Ian McKellen interpreted Gandalf in Peter Jackson's movies"]
+
+# /!\ The last document of the result is a match, because "movies" != "movie".
+# To match subwords, use match_word=False in the Query:
+query = Query(
+    '("gandalf" OR "frodo") AND NOT ("movie" OR "adaptation")',
+    match_word=False)  # this will also exclude "movies"
 
 # call to see if the text matches the query:
-print(eldar(documents[0]))
+print(query(documents[0]))
 # >>> True
-print(eldar(documents[2]))
+print(query(documents[2]))
 # >>> False
