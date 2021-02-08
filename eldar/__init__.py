@@ -81,6 +81,11 @@ class ANDNOT(Binary):
         return f"({self.left}) AND NOT ({self.right})"
 
 
+# class NOT(Binary):
+#     def evaluate(self, doc):
+
+
+
 class OR(Binary):
     def evaluate(self, doc):
         if self.left.evaluate(doc):
@@ -95,21 +100,30 @@ class OR(Binary):
 
 class Entry:
     def __init__(self, query):
+        self.not_ = False
+        if query[:4] == "not ":
+            self.not_ = True
+            query = query[4:]
         self.query = strip_quotes(query)
 
     def evaluate(self, doc):
-        return self.query in doc
+        res = self.query in doc
+        if self.not_:
+            return not res
+        return res
 
     def __repr__(self):
-        return self.query
+        if self.not_:
+            return f'NOT "{self.query}"'
+        return f'"{self.query}"'
 
 
 def parse_query(query, ignore_case=True, ignore_accent=True):
     # remove brackets around query
-    if query[0] == '(' and query[-1] == ')' and query.count('(') == 1:
+    if query[0] == '(' and query[-1] == ')':
         query = strip_brackets(query)
     # if there are quotes around query, make an entry
-    if query[0] == '"' and query[-1] == '"' and query.count('"') == 2:
+    if query[0] == '"' and query[-1] == '"' and query.count('"') == 1:
         if ignore_case:
             query = query.lower()
         if ignore_accent:
@@ -163,6 +177,16 @@ def parse_query(query, ignore_case=True, ignore_accent=True):
 
 
 def strip_brackets(query):
+    count_left = 0
+    for i in range(len(query) - 1):
+        letter = query[i]
+        if letter == "(":
+            count_left += 1
+        elif letter == ")":
+            count_left -= 1
+        if i > 0 and count_left == 0:
+            return query
+
     if query[0] == "(" and query[-1] == ")":
         return query[1:-1]
     return query
