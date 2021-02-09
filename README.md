@@ -36,7 +36,7 @@ print(eldar.filter(documents))
 print(eldar(documents[0]))
 # >>> True
 print(eldar(documents[2]))
-# >>> False
+# >>> True
 ```
 
 
