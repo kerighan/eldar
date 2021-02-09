@@ -35,6 +35,8 @@ print(eldar.filter(documents))
 # call to see if the text matches the query:
 print(eldar(documents[0]))
 # >>> True
+
+# by default, words must match. Thus, "movie" != "movies":
 print(eldar(documents[2]))
 # >>> True
 ```
