@@ -79,7 +79,22 @@ Let the query be ```query = '"movie"'```:
 * If `ignore_accent` is True, the documents "mövie" will be matched.
 * If `match_word` is True, the document will be tokenized and the query terms will have to match exactly. If set to False, the documents "movies" and "movie" will be matched. Setting this option to True may slow down the query.
 
+### Wildcards
 
+Queries also support `*` as wildcard character. Wildcard matches any number (including none) of alphanumeric characters.
+
+```python
+from eldar import Query
+
+
+# sample document and query with multiple wildcards:
+document = "Gandalf is a fictional character in Tolkien's The Lord of the Rings"
+eldar = Query('"g*dal*"')
+
+# call to see if the text matches the query:
+print(eldar(document))
+# >>> True
+```
 
 ## Authors
 
