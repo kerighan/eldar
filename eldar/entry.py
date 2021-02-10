@@ -20,6 +20,10 @@ class Entry:
 
     def evaluate(self, doc):
         if self.rgx:
+
+            if isinstance(doc, str):
+                doc = [doc]
+
             for item in doc:
                 if self.rgx.match(item):
                     res = True
