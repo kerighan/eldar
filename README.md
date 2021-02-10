@@ -95,7 +95,3 @@ eldar = Query('"g*dal*"')
 print(eldar(document))
 # >>> True
 ```
-
-## Authors
-
-Maixent Chenebaux

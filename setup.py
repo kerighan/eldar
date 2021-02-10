@@ -7,9 +7,9 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="eldar",
-    version="0.0.6",
+    version="0.0.7",
     author="Maixent Chenebaux",
-    author_email="mchenebaux@reputationsquad.com",
+    author_email="max.chbx@gmail.com",
     description="Boolean text search in Python",
     long_description=README,
     long_description_content_type="text/markdown",
