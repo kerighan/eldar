@@ -79,7 +79,9 @@ Let the query be ```query = '"movie"'```:
 * If `ignore_accent` is True, the documents "mövie" will be matched.
 * If `match_word` is True, the document will be tokenized and the query terms will have to match exactly. If set to False, the documents "movies" and "movie" will be matched. Setting this option to True may slow down the query.
 
+## License
 
+This package is MIT licensed.
 
 ## Authors
 
