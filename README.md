@@ -96,7 +96,7 @@ print(eldar(document))
 # >>> True
 ```
 
-### Building an index for faster queries
+## Building an index for faster queries
 
 Searching in a large corpus using the Query object is slow, as each document has to be checked.
 For (much) faster queries, create an `Index` object, and build it using a list of documents.
