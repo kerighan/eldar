@@ -1,5 +1,4 @@
 from eldar import Index
-from eldar.trie import Trie
 
 documents = [
     "Gandalf is a fictional character in Tolkien's The Lord of the Rings",
