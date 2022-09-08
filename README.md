@@ -96,6 +96,39 @@ print(eldar(document))
 # >>> True
 ```
 
+### Building an index for faster queries
+
+Searching in a large corpus using the Query object is slow, as each document has to be checked.
+For (much) faster queries, create an `Index` object, and build it using a list of documents.
+
+```python
+from eldar import Index
+from eldar.trie import Trie
+
+documents = [
+    "Gandalf is a fictional character in Tolkien's The Lord of the Rings",
+    "Frodo is the main character in The Lord of the Rings",
+    "Ian McKellen interpreted Gandalf in Peter Jackson's movies",
+    "Elijah Wood was cast as Frodo Baggins in Jackson's adaptation",
+    "The Lord of the Rings is an epic fantasy novel by J. R. R. Tolkien",
+    "Frodo Baggins is a hobbit"
+]
+
+index = Index(ignore_case=True, ignore_accent=True)
+index.build(documents)  # must only be done once
+
+# persist and retrieve index from disk
+index.save("index.p")  # but documents are copied to disk
+index = Index.load("index.p")
+
+print(index.search('"frodo b*" AND NOT hobbit'))  # support wildcards
+print(index.count('"frodo b*" AND NOT hobbit'))  # shows only the count
+# to only return document ids, set `return_ids` to True:
+print(index.search('"frodo b*" AND NOT hobbit', return_ids=True))
+```
+
+It works like a usual search engine does: by keeping a dictionary that maps each word to its document ids. The boolean query is turned into an operation tree, where document ids are joined or intersected in order to return the desired matches.
+
 ## License
 
 This package is MIT licensed.

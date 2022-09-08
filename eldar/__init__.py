@@ -1,3 +1,2 @@
-__version__ = "0.0.6"
-
 from .query import Query
+from .index import Index

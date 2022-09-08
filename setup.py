@@ -1,5 +1,6 @@
-from setuptools import setup, find_packages
 import pathlib
+
+from setuptools import find_packages, setup
 
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
@@ -7,7 +8,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="eldar",
-    version="0.0.7",
+    version="0.0.8",
     author="Maixent Chenebaux",
     author_email="max.chbx@gmail.com",
     description="Boolean text search in Python",
