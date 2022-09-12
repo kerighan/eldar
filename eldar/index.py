@@ -101,6 +101,10 @@ class Index:
             index = pickle.load(f)
         return index
 
+    def gui(self):
+        from .gui import create_app
+        create_app(self)
+
 
 def parse_query(query, ignore_case=True, ignore_accent=True):
     from .indexops import AND, ANDNOT, OR

@@ -16,4 +16,5 @@ index.build(documents)  # no copy is made
 # index = Index.load("index.p")
 
 # support for wildcard
-print(index.search('"frodo b*" AND NOT hobbit'))
+# print(index.search('"frodo b*" AND NOT hobbit'))
+index.gui()
