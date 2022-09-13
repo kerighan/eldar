@@ -12,9 +12,8 @@ documents = [
 index = Index()
 index.build(documents)  # no copy is made
 
-# index.save("index.p")  # but documents are copied to disk
-# index = Index.load("index.p")
+index.save("index.p")  # but documents are copied to disk
+index = Index.load("index.p")
 
 # support for wildcard
-# print(index.search('"frodo b*" AND NOT hobbit'))
-index.gui()
+print(index.search('"frodo baggins" AND NOT "elijah"'))

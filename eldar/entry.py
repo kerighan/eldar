@@ -55,8 +55,9 @@ class IndexEntry:
             raise ValueError(
                 "Single character wildcards * are not implemented")
 
+        query_term = strip_quotes(query_term)
         if " " in query_term:  # multiword query
-            self.query_term = strip_quotes(query_term).split()
+            self.query_term = query_term.split()
             self.search = self.search_multiword
         else:
             self.query_term = query_term

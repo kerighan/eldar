@@ -163,4 +163,5 @@ def parse_query(query, ignore_case=True, ignore_accent=True):
             query = query.lower()
         if ignore_accent:
             query = unidecode(query)
+        print(query)
         return IndexEntry(query)
