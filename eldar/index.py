@@ -7,16 +7,20 @@ from .entry import IndexEntry, Item
 from .query import is_balanced, strip_brackets
 from .regex import WORD_REGEX
 
+PUNCTUATION = """'!#$%&\'()+,-./:;<=>?@[\\]^_`{|}~'"""
+
 
 class Index:
     def __init__(
         self,
         ignore_case=True,
         ignore_accent=True,
+        ignore_punctuation=True,
         use_trie=True
     ):
         self.ignore_case = ignore_case
         self.ignore_accent = ignore_accent
+        self.ignore_punctuation = ignore_punctuation
         self.use_trie = use_trie
         self._index = defaultdict(set)
 
@@ -24,6 +28,10 @@ class Index:
         if query_term == "*":
             raise ValueError(
                 "Single character wildcards * are not implemented")
+
+        if self.ignore_punctuation:
+            query_term = query_term.translate(
+                str.maketrans('', '', PUNCTUATION))
 
         if "*" not in query_term:
             res = self._index.get(query_term, set())
@@ -61,6 +69,9 @@ class Index:
         for i, document in iteration:
             tokens = self.preprocess(document)
             for j, token in enumerate(tokens):
+                if self.ignore_punctuation:
+                    token = token.translate(
+                        str.maketrans('', '', PUNCTUATION))
                 self._index[token].add(Item(i, j))
 
         if self.use_trie:
