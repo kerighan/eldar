@@ -73,7 +73,6 @@ class Window(QWidget):
 
     def search(self):
         query = self.search_widget.search_input.text()
-        print(query)
         data = self.index.search(query)
         self.results_widget.update(data)
 

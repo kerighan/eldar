@@ -11,4 +11,4 @@ documents = [
 
 index = Index()
 index.build(documents)
-index.gui(documents)  # QT interface
+index.gui()  # QT interface
