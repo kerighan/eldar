@@ -14,6 +14,7 @@ class SearchWidget(QWidget):
         self.search_input.setFixedHeight(40)
         self.search_button = QPushButton("Search")
         self.search_button.clicked.connect(search)
+        self.search_input.returnPressed.connect(search)
         self.search_button.setFixedHeight(40)
 
         self.hbox = QHBoxLayout()
