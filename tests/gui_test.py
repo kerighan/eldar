@@ -1,3 +1,4 @@
+import pandas as pd
 from eldar import Index
 
 documents = [
@@ -8,7 +9,10 @@ documents = [
     "The Lord of the Rings is an epic fantasy novel by J. R. R. Tolkien",
     "Frodo Baggins is a hobbit"
 ]
+df = pd.DataFrame(documents, columns=["content"])
+df["number"] = range(len(documents))
 
 index = Index()
-index.build(documents)
+index.build(df, column="content")
 index.gui()  # QT interface
+# print(index.search("frodo"))

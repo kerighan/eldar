@@ -23,6 +23,8 @@ class Index:
         self.ignore_punctuation = ignore_punctuation
         self.use_trie = use_trie
         self._index = defaultdict(set)
+        self._is_dataframe = False
+        self._columns = []
 
     def get(self, query_term):
         if query_term == "*":
@@ -59,13 +61,32 @@ class Index:
                 results.update(res)
             return results
 
-    def build(self, documents, verbose=False):
-        self.documents = documents
-        if verbose:
-            from tqdm import tqdm
-            iteration = tqdm(enumerate(documents), total=len(documents))
+    def build(self, documents, column=None, verbose=False):
+        if isinstance(documents, list):
+            self.documents = documents
+            if verbose:
+                from tqdm import tqdm
+                iteration = tqdm(enumerate(documents), total=len(documents))
+            else:
+                iteration = enumerate(documents)
+
         else:
-            iteration = enumerate(documents)
+            import pandas as pd
+            assert isinstance(documents, pd.DataFrame)
+            assert column is not None
+            assert list(documents.index) == list(range(len(documents)))
+
+            self.documents = documents
+            self._columns = documents.columns
+            self._is_dataframe = True
+
+            if verbose:
+                from tqdm import tqdm
+                iteration = tqdm(enumerate(documents[column]),
+                                 total=len(documents))
+            else:
+                iteration = enumerate(documents[column])
+
         for i, document in iteration:
             tokens = self.preprocess(document)
             for j, token in enumerate(tokens):
@@ -94,8 +115,9 @@ class Index:
         ids = query.search(self)
         if return_ids:
             return ids
-
-        return [self.documents[i] for i in ids]
+        if not self._is_dataframe:
+            return [self.documents[i] for i in ids]
+        return self.documents.iloc[list(ids)]
 
     def count(self, query):
         return len(self.search(query, return_ids=True))

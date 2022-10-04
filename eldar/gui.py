@@ -1,9 +1,7 @@
 
-from PyQt6 import QtGui
-from PyQt6.QtWidgets import (QAbstractScrollArea, QApplication, QHBoxLayout,
-                             QHeaderView, QLabel, QLineEdit, QPushButton,
-                             QSizePolicy, QSpacerItem, QTableWidget,
-                             QTableWidgetItem, QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QLineEdit,
+                             QPushButton, QTableWidget, QTableWidgetItem,
+                             QVBoxLayout, QWidget)
 
 
 class SearchWidget(QWidget):
@@ -24,19 +22,26 @@ class SearchWidget(QWidget):
 
 
 class Results(QWidget):
-    def __init__(self):
+    def __init__(self, _is_dataframe, _columns=[]):
         super().__init__()
         self.hbox = QVBoxLayout()
 
-        self.tableWidget = QTableWidget()
-        self.tableWidget.setColumnCount(1)
-        # self.tableWidget.setItem(0, 0, QTableWidgetItem(
-        #     "Test " * 60))
-        self.tableWidget.setRowCount(0)
-        header = self.tableWidget.horizontalHeader()
-        header.hide()
-        header.setStretchLastSection(True)
-        # header.setResizeMode(0, QtGui.QHeaderView.Stretch)
+        if not _is_dataframe:
+            self.tableWidget = QTableWidget()
+            self.tableWidget.setColumnCount(1)
+            self.tableWidget.setRowCount(0)
+            header = self.tableWidget.horizontalHeader()
+            header.hide()
+            header.setStretchLastSection(True)
+        else:
+            self.tableWidget = QTableWidget()
+            self.tableWidget.setColumnCount(len(_columns))
+            self.tableWidget.setHorizontalHeaderLabels(_columns)
+            self.tableWidget.setRowCount(0)
+            header = self.tableWidget.horizontalHeader()
+            # header.setStretchLastSection(True)
+            self.update = self.update_dataframe
+            self._columns = _columns
 
         self.counter = QLabel("0 result")
         self.hbox.addWidget(self.counter)
@@ -51,9 +56,20 @@ class Results(QWidget):
 
         self.tableWidget.setRowCount(count)
         for i, val in enumerate(data):
-            self.tableWidget.setItem(i, 0,
-                                     QTableWidgetItem(val))
+            self.tableWidget.setItem(
+                i, 0, QTableWidgetItem(val))
+        self.tableWidget.resizeColumnsToContents()
 
+    def update_dataframe(self, data):
+        count = len(data)
+        self.counter.setText(f"{count} results")
+
+        self.tableWidget.setRowCount(count)
+        for i, (_, val) in enumerate(data.iterrows()):
+            for j, column in enumerate(self._columns):
+                value = str(val[column])
+                self.tableWidget.setItem(
+                    i, j, QTableWidgetItem(value))
         self.tableWidget.resizeColumnsToContents()
 
 
@@ -66,7 +82,7 @@ class Window(QWidget):
         layout = QVBoxLayout()
 
         self.search_widget = SearchWidget(self.search)
-        self.results_widget = Results()
+        self.results_widget = Results(index._is_dataframe, index._columns)
 
         layout.addWidget(self.search_widget)
         layout.addWidget(self.results_widget)
