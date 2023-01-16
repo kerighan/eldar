@@ -92,3 +92,15 @@ def test_query_results():
     sample_text = "Hello world how are you today? I'm göod"
     result = query(sample_text)
     assert result is True
+
+def test_query_case_sensitive_matching():
+
+    query = Query('Hello AND World')
+    sample_text = "Hello how are you today world?"
+    result = query(sample_text)
+    assert result is True
+
+    query = Query('Hello AND World', ignore_case=False)
+    sample_text = "Hello how are you today world?"
+    result = query(sample_text)
+    assert result is False
