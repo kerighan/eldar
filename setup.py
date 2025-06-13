@@ -21,7 +21,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Operating System :: OS Independent",
     ],
-        install_requires=[
+    install_requires=[
         'Unidecode >= 1.2.0',
         'pandas >= 1.1.3',
         'setuptools >= 50.3.0',
