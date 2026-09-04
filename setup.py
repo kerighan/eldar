@@ -24,6 +24,6 @@ setup(
     install_requires=[
         'unidecode>=1.2.0',
         'pandas>=1.1.3',
-        'setuptools>=50.3.0',
+        'setuptools>=83.0.0',
     ],
 )
